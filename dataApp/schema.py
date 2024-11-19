@@ -205,7 +205,7 @@ class CreatePerson(graphene.Mutation):
     
     person = graphene.Field(PeopleType)
 
-    def mutate(self, info, data):
+    def mutate(self, info, data):   
         person = People.objects.create(**data)
         return CreatePerson(person=person)
 
