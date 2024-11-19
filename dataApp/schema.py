@@ -3,11 +3,7 @@ from django.db import transaction
 from django.db.models import Q
 import graphene
 from graphene_django import DjangoObjectType
-from dataApp.models import (
-    People, Art, MusicAlbum, Film, Occupations, PeopleOccupations,
-    Categories, PeopleCategories, Events, RelatedPeople, Sources, Aliases,
-    Quotes, PeopleEvents, SocialMediaLink, SearchHistory
-)
+from dataApp.models import *
 import logging
 
 logger = logging.getLogger("main")
@@ -45,13 +41,33 @@ class RelatedPeopleType(DjangoObjectType):
     class Meta:
         model = RelatedPeople
 
-class SourcesType(DjangoObjectType):
+class PeopleOccupationsType(DjangoObjectType):
     class Meta:
-        model = Sources
+        model = PeopleOccupations
 
-class AliasesType(DjangoObjectType):
+class PeopleCategoriesType(DjangoObjectType):
     class Meta:
-        model = Aliases
+        model = PeopleCategories
+
+class EducationType(DjangoObjectType):
+    class Meta:
+        model = Education
+
+class AwardsType(DjangoObjectType):
+    class Meta:
+        model = Awards
+
+class PeopleEventsType(DjangoObjectType):
+    class Meta:
+        model = PeopleEvents
+
+class WrittenWorksType(DjangoObjectType):
+    class Meta:
+        model = WrittenWorks
+
+class HistoricalEventType(DjangoObjectType):
+    class Meta:
+        model = HistoricalEvent
 
 class QuotesType(DjangoObjectType):
     class Meta:
@@ -76,7 +92,34 @@ class Query(graphene.ObjectType):
     people_list = graphene.List(PeopleType)
     person = graphene.Field(PeopleType, id=graphene.Int())
     search_people = graphene.List(PeopleType, search_term=graphene.String())
+    people_occupations_list = graphene.List(PeopleOccupationsType)
+    people_categories_list = graphene.List(PeopleCategoriesType)
+    education_list = graphene.List(EducationType)
+    awards_list = graphene.List(AwardsType)
+    people_events_list = graphene.List(PeopleEventsType)
+    written_works_list = graphene.List(WrittenWorksType)
+    historical_events_list = graphene.List(HistoricalEventType)
 
+    def resolve_people_occupations_list(self, info):
+        return PeopleOccupations.objects.all()
+
+    def resolve_people_categories_list(self, info):
+        return PeopleCategories.objects.all()
+
+    def resolve_education_list(self, info):
+        return Education.objects.all()
+
+    def resolve_awards_list(self, info):
+        return Awards.objects.all()
+
+    def resolve_people_events_list(self, info):
+        return PeopleEvents.objects.all()
+
+    def resolve_written_works_list(self, info):
+        return WrittenWorks.objects.all()
+
+    def resolve_historical_events_list(self, info):
+        return HistoricalEvent.objects.all()
     def resolve_people_list(self, info):
         return People.objects.all().order_by("first_name", "last_name")
 
@@ -87,9 +130,10 @@ class Query(graphene.ObjectType):
         return People.objects.filter(
             Q(first_name__icontains=search_term) |
             Q(last_name__icontains=search_term) |
+            Q(nickname__icontains=search_term) |
             Q(biography__icontains=search_term)
         )
-    
+
     def resolve_art_list(self, info):
         return Art.objects.all().order_by("title")
 
@@ -153,7 +197,7 @@ class SocialMediaLinkInput(graphene.InputObjectType):
     platform = graphene.String(description='Социал медиагийн платформ')
     profile_url = graphene.String(description='Профайлын холбоос')
 
-############################ Mutations #############################################
+#*********************************** Mutations ***********************************
 
 class CreatePerson(graphene.Mutation):
     class Arguments:
