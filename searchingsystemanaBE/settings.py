@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'dataApp',
     'graphene_django',
     'corsheaders',
-
 ]
 
 MIDDLEWARE = [
@@ -55,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 GRAPHENE ={
-    'SCHEMA': 'dataApp.schema.schema',
+    'SCHEMA': 'searchingsystemanaBE.schema.schema',
 }
 
 ROOT_URLCONF = 'searchingsystemanaBE.urls'
@@ -93,6 +92,11 @@ DATABASES = {
     }
 }   
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -139,7 +143,3 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
