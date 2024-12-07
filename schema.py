@@ -81,24 +81,43 @@ class SearchHistoryType(DjangoObjectType):
     class Meta:
         model = SearchHistory
 
+class FilmRoleType(DjangoObjectType):
+    class Meta:
+        model = FilmRole
+class MovieGenreType(DjangoObjectType):
+    class Meta:
+        model = MovieGenre
+class GenreType(DjangoObjectType):
+    class Meta:
+        model = Genre
+
 # Queries for each model
 class Query(graphene.ObjectType):
+    # lists
     art_list = graphene.List(ArtType)
     music_album_list = graphene.List(MusicAlbumType)
     film_list = graphene.List(FilmType)
+    filmrole_list = graphene.List(FilmRoleType)
+    relatedperson_list = graphene.List(RelatedPeopleType)
+    moviegenre_list = graphene.List(MovieGenreType)
+    genre_list = graphene.List(GenreType)
+    quotes_list = graphene.List(QuotesType)
+    search_history_list = graphene.List(SearchHistoryType)
+    socialmedialink_list = graphene.List(SocialMediaLinkType)
     occupation_list = graphene.List(OccupationType)
     category_list = graphene.List(CategoryType)
     event_list = graphene.List(EventType)
     people_list = graphene.List(PeopleType)
-    person = graphene.Field(PeopleType, id=graphene.Int())
-    search_people = graphene.List(PeopleType, search_term=graphene.String())
     people_occupations_list = graphene.List(PeopleOccupationsType)
     people_categories_list = graphene.List(PeopleCategoriesType)
+    people_events_list = graphene.List(PeopleEventsType)
     education_list = graphene.List(EducationType)
     awards_list = graphene.List(AwardsType)
-    people_events_list = graphene.List(PeopleEventsType)
     written_works_list = graphene.List(WrittenWorksType)
     historical_events_list = graphene.List(HistoricalEventType)
+
+    person = graphene.Field(PeopleType, id=graphene.Int())
+    search_people = graphene.List(PeopleType, search_term=graphene.String())
 
     def resolve_people_occupations_list(self, info):
         return PeopleOccupations.objects.all()
@@ -194,7 +213,7 @@ class EventInput(graphene.InputObjectType):
     event_description = graphene.String(description='Үйл явдлын тайлбар')
 
 class SocialMediaLinkInput(graphene.InputObjectType):
-    platform = graphene.String(description='Социал медиагийн платформ')
+    platform = graphene.String(description='Сошиал медиа')
     profile_url = graphene.String(description='Профайлын холбоос')
 
 #*********************************** Mutations ***********************************
