@@ -175,6 +175,7 @@ class WrittenWorks(models.Model):
     publication_date = models.DateField()
     genre = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField()
+    writtenWorksImage = models.ImageField(upload_to="written_works/", blank=True, null=True)
 
     def __str__(self):
         return self.title
