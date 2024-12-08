@@ -19,6 +19,8 @@ class People(models.Model):
 
     def __str__(self):
         return self.full_name
+    class Meta:
+        ordering = ["first_name"]
 
 
 # Related People (Relationships)
@@ -30,7 +32,6 @@ class RelatedPeople(models.Model):
     def __str__(self):
         return f"{self.person.full_name} - {self.relationship_type} - {self.related_person.full_name}"
 
-
 # Occupations
 class Occupations(models.Model):
     occupation_name = models.CharField(max_length=255)
@@ -38,7 +39,8 @@ class Occupations(models.Model):
 
     def __str__(self):
         return self.occupation_name
-
+    class Meta:
+        ordering = ["occupation_name"]
 
 class PeopleOccupations(models.Model):
     person = models.ForeignKey(People, on_delete=models.CASCADE)
@@ -54,7 +56,8 @@ class Categories(models.Model):
 
     def __str__(self):
         return self.category_name
-
+    class Meta:
+        ordering = ["category_name"]
 
 class PeopleCategories(models.Model):
     person = models.ForeignKey(People, on_delete=models.CASCADE)
@@ -73,7 +76,8 @@ class Awards(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.date_awarded})"
-
+    class Meta:
+        ordering = ["title"]
 
 # Education
 class Education(models.Model):
@@ -86,7 +90,8 @@ class Education(models.Model):
 
     def __str__(self):
         return f"{self.degree} at {self.institution_name}"
-
+    class Meta:
+        ordering = ["institution_name"]
 
 # Social Media Links
 class SocialMediaLink(models.Model):
@@ -106,15 +111,21 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
-
+    class Meta:
+        ordering = ["name"]
 # Movie Table
 class Film(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     release_date = models.DateField()
     synopsis = models.TextField()
+    filmImage = models.ImageField(upload_to="film/", blank=True, null=True)
+
     def __str__(self):
         return self.title
+    class Meta:
+        ordering = ["title"]
+
 
 # Movie-Genre Junction Table
 class MovieGenre(models.Model):
@@ -153,7 +164,8 @@ class MusicAlbum(models.Model):
 
     def __str__(self):
         return self.title
-
+    class Meta:
+        ordering = ["title"]
 
 # Written Works
 class WrittenWorks(models.Model):
@@ -166,7 +178,8 @@ class WrittenWorks(models.Model):
 
     def __str__(self):
         return self.title
-
+    class Meta:
+        ordering = ["title"]
 
 # Artworks
 class Art(models.Model):
@@ -179,7 +192,8 @@ class Art(models.Model):
 
     def __str__(self):
         return self.title
-
+    class Meta:
+        ordering = ["title"]
 
 # Events
 class Events(models.Model):
@@ -190,7 +204,8 @@ class Events(models.Model):
 
     def __str__(self):
         return self.event_title
-
+    class Meta:
+        ordering = ["event_title"]
 
 class PeopleEvents(models.Model):
     person = models.ForeignKey(People, on_delete=models.CASCADE)
@@ -206,7 +221,8 @@ class Quotes(models.Model):
 
     def __str__(self):
         return self.quote_text[:50]
-
+    class Meta:
+        ordering = ["quote_text"]
 
 # Historical Data
 class HistoricalEvent(models.Model):
